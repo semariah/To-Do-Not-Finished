@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Task } from '../model/to-do.model';
 
 @Component({
@@ -8,8 +8,17 @@ import { Task } from '../model/to-do.model';
 })
 export class TaskListComponent {
   @Input() childTaskList: Task[];
-
-
+  @Output() clickSender = new EventEmitter();
+  editButtonClicked(taskToEdit: Task){
+    this.clickSender.emit(taskToEdit);
+  }
+  filterByCompleteness: string = "incompleteTasks";
+  onChange(optionFromMenu) {
+    this.filterByCompleteness = optionFromMenu;
+  }
+  toggleDone(clickedTask: Task, setCompleteness: boolean) {
+   clickedTask.done = setCompleteness;
+ }
   priorityColor(currentTask){
     if (currentTask.priority === 3){
       return "bg-danger";
